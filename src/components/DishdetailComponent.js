@@ -4,13 +4,11 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 're
 class DishDetail extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        };
     }
     
     renderDish(dish) {
         return(
-            <Card>
+            <Card key={dish.id}>
                 <CardImg top src={dish.image} alt={dish.name} />
                 <CardBody>
                     <CardTitle>{dish.name}</CardTitle>
@@ -21,12 +19,11 @@ class DishDetail extends Component {
     }
 
     renderComments(comments) {
-        const com = comments.map((comm) => {
-            var d = new Date(comm.date);
+        const com = comments.map((comment) => {
             return (
-              <li>
-                  <p>{comm.comment}</p>
-                  <p>-- {comm.author} , {d.toLocaleString('default', { month: 'short' })} {d.getDate()}, {d.getFullYear()}</p>
+              <li key={comment.id}>
+                  <p>{comment.comment}</p>
+                  <p>-- {comment.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
               </li>
             );
         });
@@ -43,12 +40,14 @@ class DishDetail extends Component {
     render() {
         if(this.props.dish != null)
             return (
-                    <div className="row">
-                        <div  className="col-12 col-md-5 m-1">
-                            {this.renderDish(this.props.dish)}
-                        </div>
-                        <div  className="col-12 col-md-5 m-1">
-                            {this.renderComments(this.props.dish.comments)}
+                    <div className="container">
+                        <div className="row">
+                            <div  className="col-12 col-md-5 m-1">
+                                {this.renderDish(this.props.dish)}
+                            </div>
+                            <div  className="col-12 col-md-5 m-1">
+                                {this.renderComments(this.props.dish.comments)}
+                            </div>
                         </div>
                     </div>
             );
