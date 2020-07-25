@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, NavbarBrand } from 'reactstrap';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import Home from './HomeComponent';
 import Menu from './MenuComponent';
 import DishDetail from './DishdetailComponent';
 import Header from './HeaderComponent';
@@ -21,11 +23,27 @@ class Main extends Component {
   }
 
   render() {
+    const HomePage = () => {
+      return(
+          <Home />
+      );
+    }
+    
     return (
       <div>
         <Header />
-        <Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)} />
-        <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+        <Switch>
+            <Route path='/home' component={HomePage} />
+            <Route exact path='/menu' component={() => {
+                return (
+                    <>
+                        <Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelect(dishId)} />
+                        <DishDetail dish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+                    </>
+                );
+            }} />
+            <Redirect to="/home" />
+        </Switch>
         <Footer />
       </div>
     );
